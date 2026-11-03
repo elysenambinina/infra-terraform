@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "ci_trust" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:elysenambinina/app-demo:ref:refs/heads/main"]
+      values   = ["repo:elysenambinina@177919880/app-demo@1443511575:ref:refs/heads/main"]
     }
   }
 }
@@ -65,8 +65,8 @@ data "aws_iam_policy_document" "readonly_trust" {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
       values = [
-        "repo:elysenambinina/infra-terraform:ref:refs/heads/main",
-        "repo:elysenambinina/infra-terraform:pull_request",
+        "repo:elysenambinina@177919880/infra-terraform@1443511842:ref:refs/heads/main",
+        "repo:elysenambinina@177919880/infra-terraform@1443511842:pull_request",
       ]
     }
   }
