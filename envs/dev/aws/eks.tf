@@ -13,7 +13,20 @@ module "eks" {
   cluster_endpoint_private_access      = true
 
   authentication_mode                      = "API"
-  enable_cluster_creator_admin_permissions = true
+  # Accès administrateur explicite : avec « cluster creator », le plan lancé par la CI
+  # (rôle en lecture seule) voyait un faux écart sur l'entrée d'accès.
+  enable_cluster_creator_admin_permissions = false
+  access_entries = {
+    cluster_creator = {
+      principal_arn = var.admin_principal_arn
+      policy_associations = {
+        admin = {
+          policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = { type = "cluster" }
+        }
+      }
+    }
+  }
 
   cluster_enabled_log_types = ["api", "audit", "authenticator"]
 

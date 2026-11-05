@@ -28,3 +28,8 @@ locals {
   name = "gitops-dev"
   azs  = ["eu-west-3a", "eu-west-3b", "eu-west-3c"]
 }
+
+variable "admin_principal_arn" {
+  description = "Identité IAM qui administre le cluster (accès EKS explicite)"
+  type        = string
+}
