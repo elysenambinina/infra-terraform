@@ -1,0 +1,1 @@
+activer_metriques = true
