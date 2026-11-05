@@ -16,6 +16,7 @@ module "eks" {
   # Accès administrateur explicite : avec « cluster creator », le plan lancé par la CI
   # (rôle en lecture seule) voyait un faux écart sur l'entrée d'accès.
   enable_cluster_creator_admin_permissions = false
+  kms_key_administrators                   = [var.admin_principal_arn]
   access_entries = {
     cluster_creator = {
       principal_arn = var.admin_principal_arn
