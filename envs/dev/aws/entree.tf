@@ -1,8 +1,8 @@
-# Point d'entrée public des applications : une adresse IP fixe (DuckDNS ne gère que des enregistrements A)
-# et un rôle pour AWS Load Balancer Controller, qui crée le NLB à partir du Service de Traefik.
-resource "aws_eip" "entree" {
-  domain = "vpc"
-  tags   = { Name = "${local.name}-entree" }
+# Rôle d'AWS Load Balancer Controller, qui crée le NLB à partir du Service de Traefik.
+# L'adresse IP fixe du point d'entrée est gérée dans le socle (socle/entree.tf).
+removed {
+  from = aws_eip.entree
+  lifecycle { destroy = false }
 }
 
 module "lb_controller_pod_identity" {
@@ -20,8 +20,3 @@ module "lb_controller_pod_identity" {
     }
   }
 }
-
-output "entree_ip"            { value = aws_eip.entree.public_ip }
-output "entree_allocation_id" { value = aws_eip.entree.allocation_id }
-output "entree_subnet_id"     { value = module.vpc.public_subnets[0] }
-output "vpc_id"               { value = module.vpc.vpc_id }
