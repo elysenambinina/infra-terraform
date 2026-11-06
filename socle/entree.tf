@@ -1,14 +1,16 @@
-# Adresse IP publique fixe du point d'entrée des applications.
-# Elle reste dans le socle pour survivre à la destruction du cluster : le nom DuckDNS pointe toujours vers elle.
-import {
-  to = aws_eip.entree
-  id = "eipalloc-0982f0e75cae185e1"   # bloc à retirer une fois l'import fait
+# Adresses IP publiques fixes du point d'entrée des applications, une par zone de disponibilité.
+# Elles restent dans le socle pour survivre à la destruction du cluster.
+# Le nom DuckDNS pointe vers celle de la zone a ; le NLB répartit ensuite entre les zones.
+moved {
+  from = aws_eip.entree
+  to   = aws_eip.entree["a"]
 }
 
 resource "aws_eip" "entree" {
-  domain = "vpc"
-  tags   = { Name = "gitops-dev-entree" }
+  for_each = toset(["a", "b", "c"])
+  domain   = "vpc"
+  tags     = { Name = "gitops-dev-entree-${each.key}" }
 }
 
-output "entree_ip"            { value = aws_eip.entree.public_ip }
-output "entree_allocation_id" { value = aws_eip.entree.allocation_id }
+output "entree_ip"             { value = aws_eip.entree["a"].public_ip }
+output "entree_allocation_ids" { value = join(",", [for z in ["a", "b", "c"] : aws_eip.entree[z].allocation_id]) }

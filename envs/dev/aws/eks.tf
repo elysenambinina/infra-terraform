@@ -45,8 +45,8 @@ module "eks" {
     default = {
       instance_types = ["t3.medium"]
       min_size       = 2
-      max_size       = 4
-      desired_size   = 3
+      max_size       = 5
+      desired_size   = 4
     }
   }
 }
